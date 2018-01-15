@@ -1,35 +1,27 @@
-export const getUser = (req, res, con) => {
-    const queryDb = () => {
-        return new Promise((resolve, reject)=>{
-            con.query("SELECT * FROM users", (err, result, fields) => {
-                if(err){
-                    reject(err)
-                }else{
-                    resolve(result)
-                }
-            })
+import Controller from './Controller'
+
+class UserController extends Controller {
+    static createUser(req, res, con) {
+        // Inputs
+        let email = req.body.email
+        let password = req.body.password
+        // Verify Fields
+        if (!this.isRequired([email, password])) {
+            res.status(400).json(this.response({
+                status: 'fail',
+                message: 'Missing email or password'
+            }))
+            return false
+        }
+        // Perform Request
+        con.query(`INSERT INTO users (email, password) VALUES ('${email}', '${password}')`, (err, result, fields) => {
+            if (err) {
+                res.status(500).json(err)
+            } else {
+                res.status(201).json(result)
+            }
         })
     }
-    const query2 = () => {
-        return new Promise((resolve, reject)=>{
-            con.query("SELECT email FROM users WHERE password='1234'", (err, result, fields) => {
-                if(err){
-                    reject(err)
-                }else{
-                    resolve(result)
-                }
-            })
-        })
-    }
-    Promise.all([queryDb(),query2()])
-    .then((result)=>{
-        res.status(200).json(result)
-    })
-    .catch((err)=>{
-        res.status(500).json(err)         
-    })
 }
 
-export const newUser = (req, res, con) => {
-    
-}
+export default UserController
