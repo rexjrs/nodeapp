@@ -1,13 +1,23 @@
 # Documentation:
 
-## Class Controller
+## Pre-Requisites
+1. Install latest version of Node
+2. npm install -g nodemon
+
+## Installation
+1. git clone https://github.com/rexjrs/nodeapp.git
+2. cd nodeapp
+3. npm install
+4. nodemon Index.js
+
+## Class Controller's built in helpers
 
 ### response (Used to prepare a json response)
 - this.response(object)
 - accepts object
 - can overide status, message and add extra fields
 ```
-//Returns an object
+//Returns a default object
 {
     status: 'fail',
     message: ''
