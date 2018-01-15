@@ -1,8 +1,8 @@
-#Documentation:
+# Documentation:
 
-##Class Controller
+## Class Controller
 
-###Built in functions:
+### Built in functions
 
 response (Used to prepare a json response)
 verifyFields (Used to validate inputs)
