@@ -4,34 +4,34 @@
 
 ### Built in functions
 
-- response (Used to prepare a json response)
+**response (Used to prepare a json response)**
 
-this.response(object)
-
-accepts object
-
-returns obj:
+- this.response(object)
+- accepts object
+- returns obj:
 
 ```
 {
-status: 'fail',
-message: ''
+    status: 'fail',
+    message: ''
 }
 ```
 
-- verifyFields (Used to validate inputs)
+- can overide status, message and add extra fields
+- Example: 
 
-
-
-can overide status, message and add extra fields
-Example: 
 ```
 res.status(200).json(this.response({
-status: 'pass',
-message: 'Successfully added user',
-data: ['Thomas', 'Jamie']
+    status: 'pass',
+    message: 'Successfully added user',
+    data: ['Thomas', 'Jamie']
 }))
 ```
+
+**verifyFields (Used to validate inputs)**
+
+
+
 
 - this.verifyFields(array, callback)
 accepts an array of inputs with conditions
