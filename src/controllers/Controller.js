@@ -16,7 +16,7 @@ export default class Controller {
                     callback(false)
                 }else{
                     if(result.length > 0){
-                        callback(true, result[0])
+                        callback(true, result[0].userid)
                     }else{
                         callback(false)
                     }

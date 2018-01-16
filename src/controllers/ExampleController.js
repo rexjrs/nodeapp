@@ -22,11 +22,11 @@ class ExampleController extends Controller {
     }
 
     static testAuth({ req, res, db }) {
-        this.authRequired(req, db, (status, response) => {
+        this.authRequired(req, db, (status, userid) => {
             if (status) {
                 res.status(200).json(this.response({
                     status: 'pass',
-                    message: 'nice'
+                    message: userid
                 }))
             } else {
                 res.status(401).json(this.response({
