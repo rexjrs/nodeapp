@@ -8,6 +8,13 @@ export default class Controller {
     }
 
     static verifyFields(inputs, callback) {
+        const isFloat = (n) => {
+            return n === +n && n !== (n | 0);
+        }
+
+        const isInteger = (n) => {
+            return n === +n && n === (n | 0);
+        }
         const validateEmail = (email) => {
             let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return re.test(email.toLowerCase());
@@ -24,21 +31,36 @@ export default class Controller {
                     switch (value.conditions[condition]) {
                         case 'email':
                             if (!validateEmail(value.value)) {
-                                err.push('not a valid email address')
+                                err.push('value is not a valid email address')
+                            }
+                            break;
+                        case 'string':
+                            if (typeof value.value == 'string' || value.value instanceof String) { } else {
+                                err.push('value is not a string')
+                            }
+                            break;
+                        case 'number':
+                            if (isInteger(value.value) || isFloat(value.value)) { } else {
+                                err.push('value is not a number')
+                            }
+                            break;
+                        case 'boolean':
+                            if (typeof value.value == 'boolean' || value.value instanceof Boolean) { } else {
+                                err.push('value is not a boolean')
                             }
                             break;
                         default:
                             break;
                     }
-                    if(value.conditions[condition].substring(0,3) === 'min'){
+                    if (value.conditions[condition].substring(0, 3) === 'min') {
                         let length = parseInt(value.conditions[condition].substring(4), 10)
-                        if(value.value.length < length){
+                        if (value.value.length < length) {
                             err.push(`minimum length required ${length}`)
                         }
                     }
-                    if(value.conditions[condition].substring(0,3) === 'max'){
+                    if (value.conditions[condition].substring(0, 3) === 'max') {
                         let length = parseInt(value.conditions[condition].substring(4), 10)
-                        if(value.value.length > length){
+                        if (value.value.length > length) {
                             err.push(`maxinum length ${length}`)
                         }
                     }

@@ -1,6 +1,24 @@
 import Controller from './Controller'
 
-class UserController extends Controller {
+class ExampleController extends Controller {
+    static testValidate({ req, res }) {
+        let input = req.body.input
+        this.verifyFields([
+            { name: 'input', value: input, conditions: ['required', 'boolean'] }
+        ], (status, errors) => {
+            if (!status) {
+                res.status(400).json(this.response({
+                    errors
+                }))
+            }else{
+                res.status(200).json(this.response({
+                    status: 'pass',
+                    message: 'nice'
+                }))
+            }
+        })
+    }
+
     static createUser({ req, res, db }) {
         let email = req.body.email
         let password = req.body.password
@@ -34,4 +52,4 @@ class UserController extends Controller {
     }
 }
 
-export default UserController
+export default ExampleController

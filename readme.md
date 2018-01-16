@@ -36,7 +36,14 @@ res.status(200).json(this.response({
 - accepts a callback
 - returns a status of boolean
 - returns array of errors if any
-- Supported conditions: 'required', 'email', 'min-0', 'max-0'
+- Supported conditions: 
+    - 'required'
+    - 'email'
+    - 'min-0' 
+    - 'max-0'
+    - 'string'
+    - 'number'
+    - 'boolean'
 ```
 //Example usage
 this.verifyFields([
