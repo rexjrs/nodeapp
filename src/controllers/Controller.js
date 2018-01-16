@@ -7,8 +7,22 @@ export default class Controller {
         }
     }
 
-    static authRequired(userid, token) {
-
+    static authRequired(req, db, callback) {
+        let authBearer = req.headers.authorization.replace('Bearer ', '')
+        if (authBearer) {
+            console.log(authBearer)
+            db.query(`SELECT * FROM tokens WHERE token = '${authBearer}'`, (err, result) => {
+                if(err){
+                    callback(false)
+                }else{
+                    if(result.length > 0){
+                        callback(true, result[0])
+                    }else{
+                        callback(false)
+                    }
+                }
+            })
+        }
     }
 
     static verifyFields(inputs, callback) {
