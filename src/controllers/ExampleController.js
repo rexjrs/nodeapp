@@ -10,7 +10,7 @@ class ExampleController extends Controller {
                 res.status(400).json(this.response({
                     errors
                 }))
-            }else{
+            } else {
                 res.status(200).json(this.response({
                     status: 'pass',
                     message: 'nice'
@@ -19,13 +19,19 @@ class ExampleController extends Controller {
         })
     }
 
+    static loginUser({ req, res, db }) {
+
+    }
+
     static createUser({ req, res, db }) {
+        let fullname = req.body.fullname
         let email = req.body.email
         let password = req.body.password
         let continueDB = false
         this.verifyFields([
+            { name: 'fullname', value: email, conditions: ['required', 'string'] },
             { name: 'email', value: email, conditions: ['required', 'email'] },
-            { name: 'password', value: password, conditions: ['required', 'min-6'] }
+            { name: 'password', value: password, conditions: ['required', 'string', 'min-6'] }
         ], (status, errors) => {
             if (!status) {
                 res.status(400).json(this.response({
@@ -36,7 +42,7 @@ class ExampleController extends Controller {
             }
         })
         if (continueDB) {
-            db.query(`INSERT INTO users (email, password) VALUES ('${email}', '${password}')`, (err, result, fields) => {
+            db.query(`INSERT INTO users (email, password, fullname) VALUES ('${email}', '${password}', '${fullname}')`, (err, result, fields) => {
                 if (err) {
                     res.status(500).json(this.response({
                         message: 'Error inserting user into Database'

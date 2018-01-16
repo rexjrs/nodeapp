@@ -47,7 +47,7 @@ res.status(200).json(this.response({
 ```
 //Example usage
 this.verifyFields([
-{ name: 'email', value: 'info@thomascharlesworth.com', conditions: ['required', 'email'] },
+    { name: 'email', value: 'info@thomascharlesworth.com', conditions: ['required', 'email'] },
 ], (status, errors) => {
 
 })

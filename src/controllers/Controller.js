@@ -7,6 +7,10 @@ export default class Controller {
         }
     }
 
+    static authRequired(userid, token) {
+
+    }
+
     static verifyFields(inputs, callback) {
         const isFloat = (n) => {
             return n === +n && n !== (n | 0);
