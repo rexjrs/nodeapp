@@ -4,6 +4,7 @@ class UserController extends Controller {
     static createUser({ req, res, db }) {
         let email = req.body.email
         let password = req.body.password
+        let continueDB = false
         this.verifyFields([
             { name: 'email', value: email, conditions: ['required', 'email'] },
             { name: 'password', value: password, conditions: ['required', 'min-6'] }
@@ -13,20 +14,23 @@ class UserController extends Controller {
                     errors
                 }))
             } else {
-                db.query(`INSERT INTO users (email, password) VALUES ('${email}', '${password}')`, (err, result, fields) => {
-                    if (err) {
-                        res.status(500).json(this.response({
-                            message: 'Error inserting user into Database'
-                        }))
-                    } else {
-                        res.status(201).json(this.response({
-                            status: 'pass',
-                            message: 'User successfully created'
-                        }))
-                    }
-                })
+                continueDB = true
             }
         })
+        if (continueDB) {
+            db.query(`INSERT INTO users (email, password) VALUES ('${email}', '${password}')`, (err, result, fields) => {
+                if (err) {
+                    res.status(500).json(this.response({
+                        message: 'Error inserting user into Database'
+                    }))
+                } else {
+                    res.status(201).json(this.response({
+                        status: 'pass',
+                        message: 'User successfully created'
+                    }))
+                }
+            })
+        }
     }
 }
 

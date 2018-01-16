@@ -2,7 +2,7 @@ import express from 'express'
 import mysql from 'mysql'
 import bodyParser from 'body-parser'
 import mysqlConfig from './src/config/mysql'
-import routes from './src/Routes'
+import routes from './src/routes'
 
 const db = mysql.createConnection(mysqlConfig)
 db.connect((err) => {
@@ -15,5 +15,5 @@ const app = express()
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-routes(app, db)
+routes({app, db})
 app.listen(3000)
