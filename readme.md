@@ -52,3 +52,34 @@ this.verifyFields([
 
 })
 ```
+
+## Built in Authorization
+
+### login
+- POST
+- Fields:
+    - email - string
+    - password - string, base64
+- validates email and password input
+- creates a token on successful login (destroys previous token)
+```
+//Example payload
+{
+    email: 'thomas.charlesworths@gmail.com',
+    password: 'MTIzNDU2'
+}
+```
+### create user
+- POST
+- Fields:
+    - fullname - string
+    - email - string
+    - password - string
+```
+//Example payload
+{
+    fullname: 'Thomas Charlesworth',
+    email: 'thomas.charlesworths@gmail.com',
+    password: 'MTIzNDU2'
+}
+```
