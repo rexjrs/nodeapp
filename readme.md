@@ -46,9 +46,10 @@ res.status(200).json(this.response({
     - 'boolean'
 ```
 //Example usage
+//callback is optional, if no callback provide res stead of null. Will automatically throw 400 response with errors
 this.verifyFields([
     { name: 'email', value: 'info@thomascharlesworth.com', conditions: ['required', 'email'] },
-], (status, errors) => {
+], null, (status, errors) => {
 
 })
 ```

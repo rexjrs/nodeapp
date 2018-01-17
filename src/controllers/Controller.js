@@ -10,28 +10,27 @@ export default class Controller {
     static authRequired(req, db, callback) {
         let authBearer = req.headers.authorization.replace('Bearer ', '')
         if (authBearer) {
-            console.log(authBearer)
             db.query(`SELECT * FROM tokens WHERE token = '${authBearer}'`, (err, result) => {
-                if(err){
+                if (err) {
                     callback(false)
-                }else{
-                    if(result.length > 0){
+                } else {
+                    if (result.length > 0) {
                         callback(true, result[0].userid)
-                    }else{
+                    } else {
                         callback(false)
                     }
                 }
             })
-        }else{
+        } else {
             callback(false)
         }
     }
 
-    static testTerm(req, callback){
+    static testTerm(req, callback) {
         callback()
     }
 
-    static verifyFields(inputs, callback) {
+    static verifyFields(inputs, res, callback) {
         const isFloat = (n) => {
             return n === +n && n !== (n | 0);
         }
@@ -97,9 +96,17 @@ export default class Controller {
             }
         })
         if (errors.length > 0) {
-            callback(false, errors)
-        } else {
-            callback(true)
+            if(callback){
+                callback(false, errors)
+            }else{
+                throw res.status(400).json(this.response({
+                    errors
+                }))
+            }
+        }else{
+            if(callback){
+                callback(true)
+            }
         }
     }
 }
