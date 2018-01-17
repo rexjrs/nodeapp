@@ -2,6 +2,7 @@ import ExampleController from './controllers/ExampleController'
 
 const routes = ({ app, db }) => {
     app.get('/', (req, res) => res.status(200).json("Welcome to TCNodeApp"))
+    app.get('/terminate', (req, res) => ExampleController.terminateFunc({ req, res, db }))
     // ExampleController
     app.post('/testvalidate', (req, res) => ExampleController.testValidate({ req, res, db }))
     app.post('/testauth', (req, res) => ExampleController.testAuth({ req, res, db }))

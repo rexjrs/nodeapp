@@ -27,11 +27,14 @@ export default class Controller {
         }
     }
 
+    static testTerm(req, callback){
+        callback()
+    }
+
     static verifyFields(inputs, callback) {
         const isFloat = (n) => {
             return n === +n && n !== (n | 0);
         }
-
         const isInteger = (n) => {
             return n === +n && n === (n | 0);
         }

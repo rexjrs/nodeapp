@@ -36,6 +36,13 @@ class ExampleController extends Controller {
         })
     }
 
+    static terminateFunc({ req, res, db }) {
+        return res.status(200).json(this.response({
+            status: 'pass',
+            message: 'wat'
+        }))
+    }
+
     static loginUser({ req, res, db }) {
         let email = req.body.email
         let password = req.body.password
