@@ -22,6 +22,8 @@ export default class Controller {
                     }
                 }
             })
+        }else{
+            callback(false)
         }
     }
 
