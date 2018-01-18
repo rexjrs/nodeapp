@@ -2,7 +2,7 @@ import base64 from 'hi-base64'
 import crypto from 'crypto'
 import Controller from './Controller'
 
-class ExampleController extends Controller {
+class AuthController extends Controller {
     static loginUser({ req, res, db }) {
         let email = req.body.email
         let password = req.body.password
@@ -76,4 +76,4 @@ class ExampleController extends Controller {
     }
 }
 
-export default ExampleController
+export default AuthController
