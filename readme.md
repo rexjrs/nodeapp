@@ -71,10 +71,11 @@ this.verifyFields([
 ```
 ### create user
 - POST
+- Passwords salted and hashed
 - Fields:
     - fullname - string
     - email - string
-    - password - string
+    - password - string, base64
 ```
 //Example payload
 {
