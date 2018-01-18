@@ -26,8 +26,15 @@ export default class Controller {
         }
     }
 
-    static testTerm(req, callback) {
-        callback()
+    static use({method, res, req, db, middleware}) {
+        console.log(method)
+        this[method]({res})
+    }
+
+    static test({res}) {
+        this.response(res, 200, {
+            message: 'wat'
+        })
     }
 
     static verifyFields(inputs, res, callback) {
