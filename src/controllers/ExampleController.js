@@ -13,39 +13,39 @@ class ExampleController extends Controller {
         try {
             password = base64.decode(password)
         } catch (error) {
-            throw res.status(400).json(this.response({
-                message: 'malformed password'
-            }))
+            throw this.response(res, 400, {
+                message: 'Malformed password.'
+            })
         }
         db.query(`SELECT id, email, created_at, updated_at FROM users WHERE email = '${email}' AND password = '${password}'`, (err, result, fields) => {
             if (err) {
-                return res.status(400).json(this.response({
-                    message: 'possible malformed password'
-                }))
+                return this.response(res, 400, {
+                    message: 'Possible malformed password.'
+                })
             } else {
                 if (result.length > 0) {
                     db.query(`DELETE FROM tokens WHERE userid = '${result[0].id}'`, (err2, result2) => {
                         let token = crypto.randomBytes(20).toString('hex')
                         db.query(`INSERT INTO tokens (userid, token, created_at, updated_at) VALUES ('${result[0].id}', '${token}', 'NOW()', 'NOW()')`, (err3, result3) => {
                             if (err3) {
-                                return res.status(500).json(this.response({
-                                    message: 'There was an issue creating token'
-                                }))
+                                return this.response(res, 500, {
+                                    message: 'There was an issue creating token.'
+                                })
                             } else {
-                                return res.status(200).json(this.response({
+                                return this.response(res, 200, {
                                     status: 'pass',
                                     data: {
                                         ...result[0],
                                         token
                                     }
-                                }))
+                                })
                             }
                         })
                     })
                 } else {
-                    return res.status(401).json(this.response({
-                        message: 'email or password was incorrect'
-                    }))
+                    return this.response(res, 401, {
+                        message: 'Email or password is incorrect.'
+                    })
                 }
             }
         })
@@ -63,14 +63,14 @@ class ExampleController extends Controller {
         ], res)
         db.query(`INSERT INTO users (email, password, fullname) VALUES ('${email}', '${password}', '${fullname}')`, (err, result, fields) => {
             if (err) {
-                return res.status(500).json(this.response({
-                    message: 'Error inserting user into Database'
-                }))
+                return this.response(res, 500, {
+                    message: 'Error inserting user into Database. Possible duplicate.'
+                })
             } else {
-                return res.status(201).json(this.response({
+                return this.response(res, 201, {
                     status: 'pass',
-                    message: 'User successfully created'
-                }))
+                    message: 'User successfully created.'
+                })
             }
         })
     }

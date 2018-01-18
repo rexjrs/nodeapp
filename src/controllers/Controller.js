@@ -1,10 +1,10 @@
 export default class Controller {
-    static response(message) {
-        return {
+    static response(res, code, message) {
+        return res.status(code).json({
             status: 'fail',
             message: '',
             ...message
-        }
+        })
     }
 
     static authRequired(req, db, callback) {
@@ -96,15 +96,15 @@ export default class Controller {
             }
         })
         if (errors.length > 0) {
-            if(callback){
+            if (callback) {
                 callback(false, errors)
-            }else{
-                throw res.status(400).json(this.response({
+            } else {
+                throw this.response(res, 400, {
                     errors
-                }))
+                })
             }
-        }else{
-            if(callback){
+        } else {
+            if (callback) {
                 callback(true)
             }
         }

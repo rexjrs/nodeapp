@@ -13,25 +13,23 @@
 ## Class Controller's built in helpers
 
 ### response (Used to prepare a json response)
-- this.response(object)
-- accepts object
-- can overide status, message and add extra fields
+- this.response(res, code, object)
 ```
-//Returns a default object
+//default object
 {
     status: 'fail',
     message: ''
 }
 //Example usage
-res.status(200).json(this.response({
+this.response(res, 200, {
     status: 'pass',
     message: 'Successfully added user',
     data: ['Thomas', 'Jamie']
-}))
+})
 ```
 
 ### verifyFields (Used to validate inputs)
-- this.verifyFields(array, callback)
+- this.verifyFields(array, res, callback)
 - accepts an array of inputs with conditions
 - accepts a callback
 - returns a status of boolean
@@ -46,7 +44,8 @@ res.status(200).json(this.response({
     - 'boolean'
 ```
 //Example usage
-//callback is optional, if no callback provide res stead of null. Will automatically throw 400 response with errors
+//callback is optional, if no callback, provide the res object instead of null. 
+//It will automatically throw a 400 response with errors
 this.verifyFields([
     { name: 'email', value: 'info@thomascharlesworth.com', conditions: ['required', 'email'] },
 ], null, (status, errors) => {
