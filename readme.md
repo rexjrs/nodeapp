@@ -10,7 +10,7 @@
 3. npm install
 4. nodemon Index.js
 
-## Class Controller's built in helpers
+## Controller's built in helpers
 
 ### response (Used to prepare a json response)
 - this.response(res, code, object)
@@ -83,4 +83,13 @@ this.verifyFields([
     email: 'thomas.charlesworths@gmail.com',
     password: 'MTIzNDU2'
 }
+```
+
+## Middleware
+
+Route conditioning made easy. Use the .use method, provide a method, req, res, db and an array of middlewares for that route.
+
+### auth
+```
+app.get('/', (req, res) => AuthController.use({ method: 'test', req, res, db, middleware: ['auth']}))
 ```

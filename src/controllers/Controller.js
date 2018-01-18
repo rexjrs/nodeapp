@@ -26,12 +26,22 @@ export default class Controller {
         }
     }
 
-    static use({method, res, req, db, middleware}) {
-        console.log(method)
-        this[method]({res})
+    static auth({ res, req, db }, callback) {
+        throw this.response(res, 401, {
+            message: 'FAILED'
+        })
+        // callback(true, {
+        //     extra: ''
+        // })
     }
 
-    static test({res}) {
+    static use({ method, res, req, db, middleware }) {
+        this[middleware]({ res, req, db }, (status, data) => {
+        })
+        this[method]({ res, req, db, data })
+    }
+
+    static test({ res }) {
         this.response(res, 200, {
             message: 'wat'
         })
