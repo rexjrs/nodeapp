@@ -2,6 +2,8 @@
 
 The easy to use library for creating Node.Js REST APIs quickly and efficiently.
 
+Created by Thomas Charlesworth.
+
 # Documentation:
 
 ## Installation
@@ -9,8 +11,7 @@ The easy to use library for creating Node.Js REST APIs quickly and efficiently.
 npm install --save nodeful
 ```
 
-1. The Nodeful package
-2. Using Nodeful Controller
+1. Using Nodeful Controller
 3. Using Nodeful Auth & Auth Middleware
 
 ## Controller
@@ -75,7 +76,7 @@ this.verifyFields([
 ], res)
 ```
 
-## Built in Auth and Auth Middleware
+## Built in Auth and Auth Middleware (Requires a MySQL database and Default Tables)
 
 1. Example usage
 2. Login
