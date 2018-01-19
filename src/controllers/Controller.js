@@ -7,46 +7,6 @@ export default class Controller {
         })
     }
 
-    static authRequired(req, db, callback) {
-        let authBearer = req.headers.authorization.replace('Bearer ', '')
-        if (authBearer) {
-            db.query(`SELECT * FROM tokens WHERE token = '${authBearer}'`, (err, result) => {
-                if (err) {
-                    callback(false)
-                } else {
-                    if (result.length > 0) {
-                        callback(true, result[0].userid)
-                    } else {
-                        callback(false)
-                    }
-                }
-            })
-        } else {
-            callback(false)
-        }
-    }
-
-    static auth({ res, req, db }, callback) {
-        throw this.response(res, 401, {
-            message: 'FAILED'
-        })
-        // callback(true, {
-        //     extra: ''
-        // })
-    }
-
-    static use({ method, res, req, db, middleware }) {
-        this[middleware]({ res, req, db }, (status, data) => {
-        })
-        this[method]({ res, req, db, data })
-    }
-
-    static test({ res }) {
-        this.response(res, 200, {
-            message: 'wat'
-        })
-    }
-
     static verifyFields(inputs, res, callback) {
         const isFloat = (n) => {
             return n === +n && n !== (n | 0);
