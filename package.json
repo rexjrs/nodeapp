@@ -1,14 +1,14 @@
 {
-  "name": "nodeapp",
+  "name": "nodeful",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "Index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Thomas Charlesworth",
+  "license": "MIT",
   "dependencies": {
     "babel-preset-es2015": "^6.24.1",
     "babel-register": "^6.26.0",
