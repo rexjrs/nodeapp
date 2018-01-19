@@ -164,3 +164,5 @@ const routes = ({ app, db }) => {
 
 export default routes
 ```
+
+nodeful is freely distributable under the terms of the [MIT license](./license.txt).
