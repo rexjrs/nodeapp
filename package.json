@@ -2,15 +2,20 @@
   "name": "nodeful",
   "version": "1.0.3",
   "description": "",
-  "main": "Index.js",
+  "main": "./lib/Index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "node_modules/babel-cli/bin/babel.js src --out-dir lib"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
   },
   "keywords": [],
   "author": "Thomas Charlesworth",
   "license": "MIT",
   "dependencies": {
-    "babel-preset-es2015": "^6.24.1",
     "babel-register": "^6.26.0",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
@@ -20,6 +25,9 @@
     "mysql": "^2.15.0"
   },
   "devDependencies": {
-    "babel-plugin-transform-object-rest-spread": "^6.26.0"
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1"
   }
 }
