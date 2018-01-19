@@ -1,11 +1,11 @@
 {
   "name": "nodeful",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "",
   "main": "./lib/Index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublish": "node_modules/babel-cli/bin/babel.js src --out-dir lib"
+    "prepublish": "babel src --presets babel-preset-es2015 --out-dir lib"
   },
   "babel": {
     "presets": [
