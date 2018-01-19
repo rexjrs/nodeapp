@@ -85,7 +85,7 @@ this.verifyFields([
 
 ### Example usage
 ```
-import Nodeful, { Auth } from './nodeful'
+import Nodeful, { Auth } from 'nodeful'
 
 const routes = ({ app, db }) => {
     app.post('/createuser', (req, res) => Auth.controller.createUser({ req, res, db }))
@@ -135,7 +135,7 @@ const headers = {
 #### Example Usage
 Just place Auth.middleware({db}) as the second parameter.
 ```
-import Nodeful, { Auth } from './nodeful'
+import Nodeful, { Auth } from 'nodeful'
 
 const routes = ({ app, db }) => {
     app.get('/getprofile', Auth.middleware({db}), (req,res) => {
