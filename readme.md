@@ -15,50 +15,9 @@ npm install --save nodeful
 
 ## Controller
 
-1. response - Used to prepare and send a response to the client
+1. Example usage of Controller class
 2. verifyFields - Used to validate input before going on with the rest of the code
-3. Example Usage
-
-### response (Used to prepare a json response)
-- this.response(res, code, object)
-```
-//default object
-{
-    status: 'fail',
-    message: ''
-}
-//Example usage
-this.response(res, 200, {
-    status: 'pass',
-    message: 'Successfully added user',
-    data: ['Thomas', 'Jamie']
-})
-```
-
-### verifyFields (Used to validate inputs)
-- this.verifyFields(array, res, callback)
-- accepts an array of inputs with conditions
-- accepts a callback
-- returns a status of boolean
-- returns array of errors if any
-- Supported conditions: 
-    - 'required'
-    - 'email'
-    - 'min-0' 
-    - 'max-0'
-    - 'string'
-    - 'number'
-    - 'boolean'
-```
-//Example usage
-//callback is optional, if no callback, provide the res object instead of null. 
-//It will automatically throw a 400 response with errors
-this.verifyFields([
-    { name: 'email', value: 'info@thomascharlesworth.com', conditions: ['required', 'email'] },
-], null, (status, errors) => {
-
-})
-```
+3. response - Used to prepare and send a response to the client
 
 ### Example usage
 ```
@@ -78,15 +37,69 @@ export default class BasicController extends Controller{
 }
 ```
 
-## Built in Authorization
+### response (Used to prepare and send a json response)
+- this.response(res, code, object)
+```
+//default object
+{
+    status: 'fail',
+    message: ''
+}
+this.response(res, 200, {
+    status: 'pass',
+    message: 'Successfully added user',
+    data: ['Thomas', 'Jamie']
+})
+```
 
-### login
+### verifyFields (Used to validate inputs)
+- returns a status of boolean
+- returns array of errors if any
+- Supported conditions: 
+    - 'required'
+    - 'email'
+    - 'min-0' 
+    - 'max-0'
+    - 'string'
+    - 'number'
+    - 'boolean'
+```
+this.verifyFields([
+    { name: 'email', value: 'info@thomascharlesworth.com', conditions: ['required', 'email'] },
+], null, (status, errors) => {
+
+})
+// No Callback use (Automatically throws status 400 with errors)
+this.verifyFields([
+    { name: 'email', value: 'info@thomascharlesworth.com', conditions: ['required', 'email'] },
+], res)
+```
+
+## Built in Auth and Auth Middleware
+
+1. Example usage
+2. Login
+3. Create User
+4. Auth Middleware
+
+### Example usage
+```
+import Nodeful, { Auth } from './nodeful'
+
+const routes = ({ app, db }) => {
+    app.post('/createuser', (req, res) => Auth.controller.createUser({ req, res, db }))
+    app.post('/login', (req, res) => Auth.controller.loginUser({ req, res, db }))
+}
+
+export default routes
+```
+
+### Login
+On successful login, creates token and destroys previous token. Returns user details with token.
 - POST
 - Fields:
     - email - string
     - password - string, base64
-- validates email and password input
-- creates a token on successful login (destroys previous token)
 ```
 //Example payload
 {
@@ -94,9 +107,9 @@ export default class BasicController extends Controller{
     password: 'MTIzNDU2'
 }
 ```
-### create user
+### Create User
+Creates a new account, salts and hashes the password.
 - POST
-- Passwords salted and hashed
 - Fields:
     - fullname - string
     - email - string
@@ -110,11 +123,43 @@ export default class BasicController extends Controller{
 }
 ```
 
-## Middleware
-
-Route conditioning made easy. Use the .use method, provide a method, req, res, db and an array of middlewares for that route.
-
-### auth
+### Auth Middleware
+If you protect a route with the AuthMiddleware, you must send the following headers:
 ```
-app.get('/', (req, res) => AuthController.use({ method: 'test', req, res, db, middleware: ['auth']}))
+const headers = {
+    Authorization: 'Bearer 83ec208d96bb73a9e11dd784db0e9ddde03be3d1',
+    uid: 2
+}
+```
+#### Example Usage
+Just place Auth.middleware({db}) as the second parameter.
+```
+import Nodeful, { Auth } from './nodeful'
+
+const routes = ({ app, db }) => {
+    app.get('/getprofile', Auth.middleware({db}), (req,res) => {
+        if(!req.body.uid){
+            return res.status(400).json({
+                status: 'fail',
+                message: 'Missing uid parameter'
+            })
+        }else{
+            db.query(`SELECT * FROM users WHERE id = '${req.body.uid}'`, (err, result) => {
+                if(err){
+                    return res.status(400).json({
+                        status: 'fail',
+                        message: 'Internal server error.'
+                    })
+                }else{
+                    return res.status(200).json({
+                        status: 'pass',
+                        data: result[0]
+                    }) 
+                }
+            })
+        }
+    })
+}
+
+export default routes
 ```
