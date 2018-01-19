@@ -1,4 +1,4 @@
-export const auth = ({ db }) => {
+export const authMiddleware = ({ db }) => {
     return (req, res, next) => {
         const failedRequest = (code, message) => {
             return res.status(code).json({

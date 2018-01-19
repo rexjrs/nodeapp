@@ -1,11 +1,10 @@
-import AuthController from './controllers/AuthController'
-import { auth } from './middleware/AuthMiddleware'
+import Nodeful, { Auth } from './nodeful'
 
 const routes = ({ app, db }) => {
-    app.get('/profile', auth({db}), (req,res) => res.status(200).json({hello: 'hi'}))
+    app.get('/profile', Auth.middleware({db}), (req,res) => res.status(200).json({hello: 'hi'}))
     // AuthController
-    app.post('/createuser', (req, res) => AuthController.createUser({ req, res, db }))
-    app.post('/login', (req, res) => AuthController.loginUser({ req, res, db }))
+    app.post('/createuser', (req, res) => Auth.controller.createUser({ req, res, db }))
+    app.post('/login', (req, res) => Auth.controller.loginUser({ req, res, db }))
 }
 
 export default routes

@@ -1,18 +1,27 @@
+#Nodeful
+
+The easy to use library for creating Node.Js REST APIs quickly and efficiently.
+
 # Documentation:
 
-## Pre-Requisites
-1. Install latest version of Node
-2. npm install -g nodemon
-
 ## Installation
-1. git clone https://github.com/rexjrs/nodeapp.git
-2. cd nodeapp
-3. npm install
-4. nodemon Index.js
+```
+npm install --save nodeful
+```
 
-## Controller's built in helpers
+## Contents
+1. The Nodeful package
+2. Using Nodeful Controller
+3. Using Nodeful Auth & Auth Middleware
 
-### response (Used to prepare a json response)
+### Controller
+
+#### Controller Contents
+1. response - Used to prepare and send a response to the client
+2. verifyFields - Used to validate input before going on with the rest of the code
+3. Example Usage
+
+1. response (Used to prepare a json response)
 - this.response(res, code, object)
 ```
 //default object
@@ -28,7 +37,7 @@ this.response(res, 200, {
 })
 ```
 
-### verifyFields (Used to validate inputs)
+2. verifyFields (Used to validate inputs)
 - this.verifyFields(array, res, callback)
 - accepts an array of inputs with conditions
 - accepts a callback
@@ -51,6 +60,24 @@ this.verifyFields([
 ], null, (status, errors) => {
 
 })
+```
+
+3. Example usage
+```
+import Nodeful, { Controller } from 'nodeful'
+
+export default class BasicController extends Controller{
+    static basicFunction({req, res}){
+        const email = req.body.email
+        this.verifyFields([
+            { name: 'email', value: email, conditions: ['required', 'email'] }
+        ], res)
+        return this.response(res, 200, {
+            status: 'pass',
+            message: `Hello there ${email}`
+        })
+    }
+}
 ```
 
 ## Built in Authorization
