@@ -9,19 +9,17 @@ The easy to use library for creating Node.Js REST APIs quickly and efficiently.
 npm install --save nodeful
 ```
 
-## Contents
 1. The Nodeful package
 2. Using Nodeful Controller
 3. Using Nodeful Auth & Auth Middleware
 
-### Controller
+## Controller
 
-#### Controller Contents
 1. response - Used to prepare and send a response to the client
 2. verifyFields - Used to validate input before going on with the rest of the code
 3. Example Usage
 
-1. response (Used to prepare a json response)
+### response (Used to prepare a json response)
 - this.response(res, code, object)
 ```
 //default object
@@ -37,7 +35,7 @@ this.response(res, 200, {
 })
 ```
 
-2. verifyFields (Used to validate inputs)
+### verifyFields (Used to validate inputs)
 - this.verifyFields(array, res, callback)
 - accepts an array of inputs with conditions
 - accepts a callback
@@ -62,7 +60,7 @@ this.verifyFields([
 })
 ```
 
-3. Example usage
+### Example usage
 ```
 import Nodeful, { Controller } from 'nodeful'
 
