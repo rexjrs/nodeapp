@@ -1,3 +1,7 @@
+require('babel-register')({
+	presets: ['es2015']
+});
+
 import DefaultController from './controllers/Controller'
 import AuthController from './controllers/AuthController'
 import { authMiddleware } from './middleware/Middleware'
