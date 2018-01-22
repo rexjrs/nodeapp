@@ -1,11 +1,11 @@
 {
   "name": "nodeful",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "",
   "main": "./lib/Index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublish": "babel src --presets babel-preset-es2015 --out-dir lib"
+    "build": "babel dev/src --presets babel-preset-es2015 --out-dir lib"
   },
   "babel": {
     "presets": [
@@ -16,7 +16,16 @@
     "type": "git",
     "url": "https://github.com/rexjrs/nodeful.git"
   },
-  "keywords": [],
+  "keywords": [
+    "REST",
+    "RESTFUL",
+    "Node",
+    "Node.js",
+    "Backend",
+    "Back-end",
+    "Javascript",
+    "es6"
+  ],
   "author": "Thomas Charlesworth",
   "license": "MIT",
   "dependencies": {

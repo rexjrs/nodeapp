@@ -19,6 +19,7 @@ npm install --save nodeful
 1. Example usage of Controller class
 2. verifyFields - Used to validate input before going on with the rest of the code
 3. response - Used to prepare and send a response to the client
+4. Eloquent Querying - Easier querying
 
 ### Example usage
 ```
@@ -74,6 +75,23 @@ this.verifyFields([
 this.verifyFields([
     { name: 'email', value: 'info@thomascharlesworth.com', conditions: ['required', 'email'] },
 ], res)
+```
+
+### Eloquent Querying
+- Supported DBs:
+    - MySQL
+- Supported Statements:
+```
+const query = `users::get()`
+const query = `users::first()`
+const query = `users::pluck(email, fullname)`
+const query = `users::where(fullname, 'Thomas Charlesworth')->get()`
+const query = `users::where(fullname, 'Thomas Charlesworth')->first()`
+const query = `users::where(fullname, 'Thomas Charlesworth')->pluck(email, fullname)`
+
+this.query(db, query, (err, result) => { 
+    console.log(result, err)
+})
 ```
 
 ## Built in Auth and Auth Middleware (Requires a MySQL database and Default Tables)

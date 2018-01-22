@@ -1,4 +1,66 @@
 export default class Controller {
+    static query(db, query, callback) {
+        let finalQuery = ''
+        const tableName = query.slice(0, query.indexOf('::'))
+        let fullQuery = query.slice(query.indexOf('::') + 2)
+        let nextString = ''
+        let finalMove = ''
+        const conditions = []
+        const seperate = () => {
+            if (fullQuery.indexOf('->') > -1) {
+                let workOn = fullQuery.slice(0, fullQuery.indexOf('->'))
+                let workOnArray = workOn.split(',')
+                if (workOnArray.length < 3) {
+                    let type = workOnArray[0].slice(0, workOnArray[0].indexOf('('))
+                    let parameter = (workOnArray[0].slice(workOnArray[0].indexOf('(') + 1)).trim()
+                    let value = workOnArray[1].replace(`)`, '').trim()
+                    conditions.push(`${type.toUpperCase()} ${parameter} = ${value}`)
+                }
+                nextString = fullQuery.slice(fullQuery.indexOf('->') + 2)
+                if (nextString.indexOf('->') < 0) {
+                    prepStatement()
+                } else {
+                    seperate()
+                }
+            }else{
+                nextString = fullQuery
+                prepStatement()
+            }
+        }
+        const prepStatement = () => {
+            if (nextString.indexOf('get') > -1 || nextString.indexOf('first') > -1) {
+                finalQuery = `SELECT * FROM ${tableName} `
+            }
+            if (nextString.indexOf('pluck') > -1) {
+                let params = nextString.replace('pluck(', '').replace(')', '').split(',')
+                let paramString = ''
+                params.forEach((value, index) => {
+                    if (index + 1 === params.length) {
+                        paramString = `${paramString} ${value.trim()} `
+                    } else {
+                        paramString = `${paramString} ${value.trim()}, `
+                    }
+                })
+                finalQuery = `SELECT ${paramString.trim()} FROM ${tableName} `
+            }
+        }
+        seperate()
+        conditions.forEach((value, index) => {
+            finalQuery = finalQuery + value
+        })
+        db.query(finalQuery, (err, result) => {
+            if (!err) {
+                if (query.indexOf('first') > -1) {
+                    callback(true, result[0])
+                } else {
+                    callback(true, result)
+                }
+            } else {
+                callback(false, err)
+            }
+        })
+    }
+
     static response(res, code, message) {
         return res.status(code).json({
             status: 'fail',
