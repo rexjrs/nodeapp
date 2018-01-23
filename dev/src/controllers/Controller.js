@@ -3,26 +3,59 @@ export default class Controller {
         let finalQuery = ''
         const tableName = query.slice(0, query.indexOf('::'))
         let fullQuery = query.slice(query.indexOf('::') + 2)
-        let nextString = ''
+        let nextString = fullQuery
         let finalMove = ''
         const conditions = []
         const seperate = () => {
             if (fullQuery.indexOf('->') > -1) {
-                let workOn = fullQuery.slice(0, fullQuery.indexOf('->'))
-                let workOnArray = workOn.split(',')
-                if (workOnArray.length < 3) {
-                    let type = workOnArray[0].slice(0, workOnArray[0].indexOf('('))
-                    let parameter = (workOnArray[0].slice(workOnArray[0].indexOf('(') + 1)).trim()
-                    let value = workOnArray[1].replace(`)`, '').trim()
-                    conditions.push(`${type.toUpperCase()} ${parameter} = ${value}`)
+                let workOn = nextString.slice(0, nextString.indexOf('->'))
+                if (workOn.indexOf('>=') > -1 || workOn.indexOf('<=') > -1 || workOn.indexOf('<') > -1 || workOn.indexOf('>') > -1 || workOn.indexOf('=') > -1) {
+                    let indexOfCondition =
+                        (workOn.indexOf('>=') > -1 ? { index: workOn.indexOf('>='), val: '>=' } : false) ||
+                        (workOn.indexOf('<=') > -1 ? { index: workOn.indexOf('<='), val: '<=' } : false) ||
+                        (workOn.indexOf('<') > -1 ? { index: workOn.indexOf('<'), val: '<' } : false) ||
+                        (workOn.indexOf('>') > -1 ? { index: workOn.indexOf('>'), val: '>' } : false) ||
+                        (workOn.indexOf('=') > -1 ? { index: workOn.indexOf('='), val: '=' } : false)
+                    let type = workOn.slice(0, workOn.indexOf('('))
+                    let parameter = (workOn.slice(workOn.indexOf('(') + 1, indexOfCondition.index)).trim()
+                    let value = (workOn.slice(indexOfCondition.index + indexOfCondition.val.length).replace(')', '')).trim()
+                    let found = false
+                    conditions.forEach((val, indexCondition) => {
+                        if (val.indexOf(type.toUpperCase()) > -1) {
+                            let newVal = `${val} AND ${parameter} ${indexOfCondition.val} ${value}`
+                            conditions[indexCondition] = newVal
+                            found = true
+                        }
+                    })
+                    if (!found) {
+                        conditions.push(`${type.toUpperCase()} ${parameter} ${indexOfCondition.val} ${value}`)
+                    }
+                } else {
+                    let workOnArray = workOn.split(',')
+                    if (workOnArray.length < 3) {
+                        let type = workOnArray[0].slice(0, workOnArray[0].indexOf('('))
+                        let parameter = (workOnArray[0].slice(workOnArray[0].indexOf('(') + 1)).trim()
+                        let value = workOnArray[1].replace(`)`, '').trim()
+                        let found = false
+                        conditions.forEach((val, indexCondition) => {
+                            if (val.indexOf(type.toUpperCase()) > -1) {
+                                let newVal = `${val} AND ${parameter} = ${value}`
+                                conditions[indexCondition] = newVal
+                                found = true
+                            }
+                        })
+                        if (!found) {
+                            conditions.push(`${type.toUpperCase()} ${parameter} = ${value}`)
+                        }
+                    }
                 }
-                nextString = fullQuery.slice(fullQuery.indexOf('->') + 2)
+                nextString = nextString.slice(nextString.indexOf('->') + 2)
                 if (nextString.indexOf('->') < 0) {
                     prepStatement()
                 } else {
                     seperate()
                 }
-            }else{
+            } else {
                 nextString = fullQuery
                 prepStatement()
             }

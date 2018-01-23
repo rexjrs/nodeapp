@@ -82,12 +82,19 @@ this.verifyFields([
     - MySQL
 - Supported Statements:
 ```
+// = | <= | >= | > | <
 const query = `users::get()`
 const query = `users::first()`
 const query = `users::pluck(email, fullname)`
 const query = `users::where(fullname, 'Thomas Charlesworth')->get()`
 const query = `users::where(fullname, 'Thomas Charlesworth')->first()`
 const query = `users::where(fullname, 'Thomas Charlesworth')->pluck(email, fullname)`
+const query = `users::where(fullname = 'Thomas Charlesworth')->get()`
+const query = `users::where(fullname = 'Thomas Charlesworth')->get()`
+users::where(id > 2)
+        ->where(email = 'thomas.charlesworths@gmail.com')
+        ->where(fullname, 'Thomas Charlesworth')
+        ->get()
 
 this.query(db, query, (err, result) => { 
     console.log(result, err)
